@@ -13,6 +13,8 @@ if(!SECRET_KEY){
 
 const users = [
     { username: 'usuario', password: 'senha', role: 'user' },
+    { username: 'usuario2', password: 'senha2', role: 'adm' },
+
 ];
 
 
@@ -51,8 +53,32 @@ const authenticateToken = (req, res, next) => {
     });
   };
 
+  const authenticateRole = (requiredRole) => (req, res, next) => {
+    const token = req.headers['authorization'];
+
+    if (token == null) {
+        throw new Error('access denied');
+    }
+
+    jwt.verify(token, SECRET_KEY, (err, user) => {
+        if (err) {
+            throw new Error('Invalid credentials');
+        }
+
+        // Verifica se o usuário possui a role necessária
+        if (!user.role || user.role !== requiredRole) {
+          console.log("\n erro qui \n")
+            throw new Error('');
+        }
+
+        req.user = user; // Adiciona o usuário autenticado ao objeto de requisição para uso posterior
+        next(); // Continua para a próxima middleware ou rota
+    });
+};
+
 
   module.exports = {
     authenticateUser,
     authenticateToken,
+    authenticateRole,
   };

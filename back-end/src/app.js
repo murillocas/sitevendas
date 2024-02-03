@@ -30,6 +30,8 @@ app.use(morgan('combined'));
 app.use('/login',authtoken.authenticateUser);
 
 app.use('/vendedor/',authtoken.authenticateToken,vendedorRouter);
+app.use('/adm/',authtoken.authenticateRole("adm"),vendedorRouter);
+
 app.use('/comprador/',compradorRouter);
 
 
