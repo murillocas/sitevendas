@@ -2,6 +2,8 @@ const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 const express = require('express'); 
 
+const databaseUsuario = require("../repositories/dataBaseUsuario")
+
 // Carregar variáveis de ambiente
 dotenv.config()
 const SECRET_KEY = process.env.SECRET_KEY;
@@ -11,20 +13,16 @@ if(!SECRET_KEY){
     throw new Error(500);
 }
 
-const users = [
-    { username: 'usuario', password: 'senha', role: 'user' },
-    { username: 'usuario2', password: 'senha2', role: 'adm' },
 
-];
 
 
 // valida usuario e cria o tokem
 const authenticateUser = (req, res, next) => {
     const { username, password } = req.body;
-  
-    const user = users.find(user => user.username === username && user.password === password);
-  
-    if (user) {
+    console.log("o usuario deve estar aki" )
+
+    const user = databaseUsuario.findUser(username);//users.find(user => user.username === username && user.password === password);
+    if (user.password == password) {
       const token = jwt.sign({ username: user.username, role: user.role }, SECRET_KEY, { expiresIn: '1h' });
       res.json({ token });
     } else {

@@ -109,6 +109,6 @@ const itens = [
       if(!item){
         throw new Error('');
       }
-      return itens.find(item => item.id === itemId);
+      return item;
     },
   };

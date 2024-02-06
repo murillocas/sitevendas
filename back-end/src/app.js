@@ -11,6 +11,7 @@ const authtoken = require("../src/services/authMiddleware")
 
 const vendedorRouter = require("./routers/vendedor")
 const compradorRouter = require("./routers/comprador")
+const loginController = require("./controlers/loginController")
 
 
 
@@ -30,10 +31,9 @@ app.use(morgan('combined'));
 app.use('/login',authtoken.authenticateUser);
 
 app.use('/vendedor/',authtoken.authenticateToken,vendedorRouter);
-app.use('/adm/',authtoken.authenticateRole("adm"),vendedorRouter);
-
 app.use('/comprador/',compradorRouter);
 
+app.use('/adm/',authtoken.authenticateRole("adm"),vendedorRouter);
 
 
 
