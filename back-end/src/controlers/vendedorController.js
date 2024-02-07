@@ -1,15 +1,20 @@
-const databaseTeste = require("../repositories/jsonTest")
 const dbItem = require("../repositories/dbItems")
-const createItem = (req, res, next) => {
+const createItem = async(req, res, next) => {
     const newItem = req.body;
     //databaseTeste.addItem(newItem)
+    try{
+        await dbItem.insertItem(newItem)
+
+    }catch{
+        throw new Error('');
+
+    }
     dbItem.insertItem(newItem)
    // res.sendStatus(200);
-    throw new Error('');
 }
 
 const deleteItem = (req, res, next) => {
-    res.send("item criado")
+    res.send("item deletado")
     throw new Error('');
 }
 

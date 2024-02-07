@@ -11,7 +11,6 @@ const authtoken = require("../src/services/authMiddleware")
 
 const vendedorRouter = require("./routers/vendedor")
 const compradorRouter = require("./routers/comprador")
-const loginController = require("./controlers/loginController")
 
 
 

@@ -1,19 +1,25 @@
-const databaseTeste = require("../repositories/jsonTest")
-const authMiddleware = require("../services/authMiddleware")
+const dbItem = require("../repositories/dbItems")
 
 
-const findItem = (req, res, next) => {
-    console.log(req.params.id);
-    res.json( databaseTeste.findItem(req.query.id));
+const findItem = async (req, res, next) => {
+    //console.log(req.params.id);
+    //res.json( databaseTeste.findItem(req.query.id));
   
-    throw new Error('');
+    try{
+        res.json( await dbItem.findItemId(req.query.id));
+    }catch (err){
+        throw new Error('');
+    }
 }
 
-const allItem = (req, res, next) => {
+const allItem = async (req, res, next) => {
+    try{
+        res.json( await dbItem.getItems());
+    }catch (err){
+        throw new Error('');
+    }
+    
 
-    res.json( databaseTeste.allItems());
-
-    throw new Error('');
 }
 
 
