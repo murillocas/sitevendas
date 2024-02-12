@@ -1,61 +1,89 @@
 const db = require("../services/dbconnection");
 
-
-function getItems() {
-  return new Promise((resolve, reject) => {
-    const query ='SELECT * FROM items'
-    db.query(query, (err, results) => {
-      if (err) {
-        console.log(err)
-        throw new Error('');
-      } else {
-        //console.log(results);
-        resolve(results);
-      }
-      //return results
-
-    });
-  })
+async function getItems() {
+  try {
+    const query = 'SELECT * FROM items';
+    const connect = await db.abrirConexao();
+    const [results, fields] = await connect.query(query);
+    connect.release();
+    return results;
+  } catch (error) {
+    console.error("Erro ao obter itens:", error);
+    throw error;
+  }
 }
+async function findItemId(ID) {
 
-function findItemId(ID) {
-  return new Promise((resolve, reject) => {
+  try {
     const query = 'SELECT * FROM items WHERE id = ?';
+    const connect = await db.abrirConexao();
+    const [results, fields] = await connect.query(query, [ID]);
 
-    db.query(query, [ID], (err, results) => {
-      if (err) {
-        console.log(err)
-        throw new Error('');
-      } else {
-        //console.log(results);
-        resolve(results);
-      }
-      console.log(results)
-      //return results
+    connect.release();
+    return results;
 
-    });
-  })
-}
-function insertItem(newItem) {
-  return new Promise((resolve, reject) => {
-
-  const query = 'INSERT INTO items SET ?'
-  db.query(query, newItem, (err, results) => {
-    if (err) {
-     // reject(err);
-    }else {
-      //console.log(results);
-      resolve(results);
-    }
-
-  });
-})
+  } catch (error) {
+    console.error("Erro ao procurar itens:", error);
+    throw error;
+  }
 
 }
+async function insertItem(newItem) {
+
+  try{
+    const query = 'INSERT INTO items SET ?';
+    const connect = await db.abrirConexao();
+    const [results, fields] = await connect.query(query, [newItem]);
+
+    connect.release();
+    return results;
+
+  }catch(error) {
+    console.error("Erro ao inserir itens:", error);
+    throw error;
+  }
+
+}
+async function deletItem(ID) {
+
+  try{
+    const query = 'DELETE FROM items WHERE id = ?';
+    const connect = await db.abrirConexao();
+    const [results, fields] = await connect.query(query, [ID]);
+
+    connect.release();
+    return results;
+
+  }catch(error) {
+    console.error("Erro ao deletar itens:", error);
+    throw error;
+  }
+
+}
+async function updateItem(ID, updateItem) {
+
+  try{
+    const query = 'UPDATE items SET ? WHERE id = ?';
+    const connect = await db.abrirConexao();
+    const [results, fields] = await connect.query(query, [updateItem, ID]);
+
+    connect.release();
+    return results;
+
+  }catch(error) {
+    console.error("Erro ao atualizar itens:", error);
+    throw error;
+  }
+
+}
+
+
 
 // Exportar a função para uso em outros arquivos
 module.exports = {
   getItems,
   insertItem,
   findItemId,
+  deletItem,
+  updateItem,
 };

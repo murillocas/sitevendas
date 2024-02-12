@@ -38,7 +38,11 @@ app.use('/adm/',authtoken.authenticateRole("adm"),vendedorRouter);
 
 
 app.use((req, res, next) => {
-  throw new Error('Rota não encontrada');
+  try{
+    res.json({mensage:"rota não encontrada"})
+  }catch{
+    throw new Error('Rota não encontrada');
+  }
 });
 
 

@@ -2,8 +2,8 @@ const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 const express = require('express'); 
 
-const databaseUsuario = require("../repositories/dataBaseUsuario")
-
+const dbUser = require("../repositories/dbUsuario")
+//const dbItem = require("../repositories/dbItems")
 // Carregar variáveis de ambiente
 dotenv.config()
 const SECRET_KEY = process.env.SECRET_KEY;
@@ -14,13 +14,37 @@ if(!SECRET_KEY){
 }
 
 
+const authenticateUser = async (req, res, next) => {
+  const { email, senha } = req.body;
+  console.log(req.body);
 
+  try{
+    console.log("??");
 
+    const usuario = await dbUser.findUserLogin(email);
+
+    if (usuario[0].senha == senha) {
+      const token = jwt.sign({ username: usuario[0].name, role: usuario[0].role }, SECRET_KEY, { expiresIn: '1h' });
+      res.json({ token });
+    } else {
+        throw new Error('Credenciais inválida');
+    }
+
+  }catch{
+    res.json("não ok");
+
+  }
+};
+/*
 // valida usuario e cria o tokem
-const authenticateUser = (req, res, next) => {
+const authenticateUser = async (req, res, next) => {
     const { username, password } = req.body;
-    console.log("o usuario deve estar aki" )
-
+    //console.log("o usuario deve estar aki" )
+  try{
+    const usuario = await dbUser.findUserLogin(username)
+  }catch{
+    throw new Error('');
+  }
     const user = databaseUsuario.findUser(username);//users.find(user => user.username === username && user.password === password);
     if (user.password == password) {
       const token = jwt.sign({ username: user.username, role: user.role }, SECRET_KEY, { expiresIn: '1h' });
@@ -29,7 +53,7 @@ const authenticateUser = (req, res, next) => {
         throw new Error('Credenciais inválida');
     }
   };
-
+*/
 
   // valida valida tokem e permite seguir na rota
 const authenticateToken = (req, res, next) => {
