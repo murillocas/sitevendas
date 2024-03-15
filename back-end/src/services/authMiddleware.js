@@ -19,8 +19,6 @@ const authenticateUser = async (req, res, next) => {
   console.log(req.body);
 
   try{
-    console.log("??");
-
     const usuario = await dbUser.findUserLogin(email);
 
     if (usuario[0].senha == senha) {
@@ -29,7 +27,6 @@ const authenticateUser = async (req, res, next) => {
     } else {
         throw new Error('Credenciais inválida');
     }
-
   }catch{
     res.json("não ok");
 
