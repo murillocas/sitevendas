@@ -1,5 +1,7 @@
 import Link from "next/link"
 import styles from "./page.module.css"
+import "./globals.css";
+
 
 export const metadata = {
   title: 'site',
@@ -11,13 +13,13 @@ export default function RootLayout({ children }) {
     <html lang="pt-br">
       <body>
         <header>
-          <nav className={styles.navegadorHeader}>
-            <ul>
-              <li> <Link href={"/teste"}> teste </Link>   </li>
+          <nav class="flex justify-end bg-red-600">
+            <ul class="flex ">
+              <li class="m-1"> <Link href={"/teste"}> teste </Link>   </li>
 
-              <li> <Link href={"/singIn"}> singIn </Link>   </li>
+              <li class="m-1"> <Link href={"/singIn"}> singIn </Link>   </li>
 
-              <li> <Link href={"/"}> HOME </Link>   </li>
+              <li class="m-1"> <Link href={"/"}> HOME </Link>   </li>
             </ul>
           </nav>
 
@@ -25,7 +27,7 @@ export default function RootLayout({ children }) {
 
         <main > {children}</main>
 
-        <footer className={styles.footerLayout}>
+        <footer class="flex justify-center bg-neutral-700">
          <p> entre em contato em email@email.com </p> 
         </footer>
 
